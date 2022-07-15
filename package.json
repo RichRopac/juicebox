@@ -16,11 +16,11 @@
     "url": "https://github.com/RichRopac/juicebox/issues"
   },
   "homepage": "https://github.com/RichRopac/juicebox#readme",
-  "description": "",
   "dependencies": {
     "pg": "^8.7.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"
-  }
+  },
+  "description": ""
 }
