@@ -26,6 +26,67 @@ async function createUser({
   }
 }
 
+async function createPost({
+  authorId,
+  title,
+  content
+}) {
+  try {
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function updatePost(id, {
+  title,
+  content,
+  active
+}) {
+  try {
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getAllPosts() {
+  try {
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getPostsByUser() {
+  try {
+    const { rows } = await client.query(`
+    SELECT * FROM posts
+    WHERE "authorID"=${ userId };
+    `);
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getUserById(userId) {
+  try {
+    const { rows: [ user ] } = await client.query(`
+    SELECT id FROM users IF EXISTS; 
+    `)
+    if (rows.length === 0) {
+      return null;
+    }
+    else {
+      return { rows };
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function getAllUsers() {
     const { rows } = await client.query(
       `SELECT id, username, name, location, active

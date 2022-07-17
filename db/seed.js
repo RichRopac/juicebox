@@ -42,6 +42,27 @@ async function createTables() {
   }
 }
 
+async function createPosts() {
+  try {
+    console.log('starting to build posts...');
+
+    await client.query(`
+      CREATE TABLE posts(
+        id SERIAL PRIMARY KEY,
+        "authorId" INTEGER REFERENCES users(id) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        content TEXT NOT NULL,
+        active BOOLEAN DEFAULT true
+      );
+      `);
+
+      console.log("Finished building posts!");
+  } catch (error) {
+    console.error("Error building posts!");
+    throw error;
+  }
+}
+
 async function createInitialUsers() {
   try {
     console.log("Starting to create users...");
@@ -84,6 +105,7 @@ async function rebuildDB() {
 
     await dropTables();
     await createTables();
+    await createPosts();
     await createInitialUsers();
   } catch (error) {
     throw error;
