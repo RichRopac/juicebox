@@ -103,8 +103,6 @@ async function getAllTags() {
     const { rows } = await client.query(`
       SELECT *
       FROM tags;
-      WHERE name
-      IN ($1, $2, $3);
     `);
 
     return rows;
