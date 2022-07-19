@@ -8,8 +8,7 @@ const {
   updatePost,
   getAllPosts,
   getPostsByUser,
-  addTagsToPost,
-  getPostsByTagName
+  addTagsToPost
 } = require("./index");
 
 async function dropTables() {
@@ -111,7 +110,6 @@ async function createInitialPosts() {
         "This is my first post. I hope I love writing blogs as much as I love writing them.",
         tags: ["#happy", "#youcandoanything"]
     });
-    console.log("???")
     await createPost({
       authorId: sandra.id,
       title: "How does this work?",
@@ -199,16 +197,6 @@ async function testDB() {
     console.log("Calling getUserById with 1");
     const albert = await getUserById(1);
     console.log("Result:", albert);
-    
-    console.log("Calling updatePost on posts[1], only updating tags");
-    const updatePostTagsResult = await updatePost(posts[1].id, {
-      tags: ["#youcandoanything", "#redfish", "#bluefish"]
-    });
-    console.log("Result:", updatePostTagsResult);
-
-    console.log("Calling getPostsByTagName with #happy");
-    const postsWithHappy = await getPostsByTagName("#happy");
-    console.log("Result:", postsWithHappy);
 
     console.log("Finished database tests!");
   } catch (error) {
