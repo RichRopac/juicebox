@@ -1,4 +1,6 @@
 //new comment for testing :)
+const express = require('express');
+const apiRouter = express.Router();
 
 // set `req.user` if possible
 const jwt = require('jsonwebtoken');
@@ -34,10 +36,6 @@ apiRouter.use(async (req, res, next) => {
 });
 
 // Attach routers below here
-
-
-const express = require('express');
-const apiRouter = express.Router();
 
 const usersRouter = require('./users');
 apiRouter.use('/users', usersRouter);
