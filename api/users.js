@@ -1,6 +1,6 @@
 const express = require('express');
 const usersRouter = express.Router();
-const { getAllUsers } = require('../db');
+const { getAllUsers, getUserByUsername } = require('../db');
 
 const jwt = require('jsonwebtoken');
 const { getUserById } = require('../db');
@@ -41,7 +41,7 @@ usersRouter.post('/login', async (req, res, next) => {
 
     if (user && user.password == password) {
       // create token & return to user
-      const token = jwt.sign({ id: user.Id, username: user.username }, { JWT_SECRET });
+      const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET);
       res.send({ message: "you're logged in!", token });
     } else {
       next({ 
