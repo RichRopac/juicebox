@@ -38,10 +38,10 @@ async function createPost({ authorId, title, content, tags=[]}) {
     `,
       [authorId, title, content]
     );
-    console.log("post: ", post)
+
     const tagList = await createTags(tags);
 
-    console.log("tag list:", tagList)
+
     return await addTagsToPost(post.id, tagList);
   } catch (error) {
     throw error;
