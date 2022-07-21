@@ -1,10 +1,13 @@
 //new comment for testing :)
+//token for testing: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGJlcnQiLCJpYXQiOjE2NTg0Mjk0NTR9.xp5hwFw88qgwdtZJ05s7EjrYRr02xxY95brjI3mfkXI
+//curl http://localhost:3000/api/posts/1 -X DELETE -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbGJlcnQiLCJpYXQiOjE2NTg0Mjk0NTR9.xp5hwFw88qgwdtZJ05s7EjrYRr02xxY95brjI3mfkXI'
 const express = require('express');
 const apiRouter = express.Router();
 
 // set `req.user` if possible
 const jwt = require('jsonwebtoken');
-const { getUserById, createUser, getUserByUsername } = require('../db');
+const { getUserById, createUser, getUserByUsername, getPostById, updatePost} = require('../db');
+const { requireUser } = require('./utils');
 const { JWT_SECRET } = process.env;
 
 
@@ -44,6 +47,8 @@ apiRouter.use((req, res, next) => {
 
   next();
 });
+
+
 
 // Attach routers below here
 
@@ -90,6 +95,29 @@ usersRouter.post('/register', async (req, res, next) => {
   } catch ({ name, message }) {
     next({ name, message })
   } 
+});
+postsRouter.delete('/:postId', requireUser, async (req, res, next) => {
+  try {
+    const post = await getPostById(req.params.postId);
+
+    if (post && post.author.id === req.user.id) {
+      const updatedPost = await updatePost(post.id, { active: false });
+
+      res.send({ post: updatedPost });
+    } else {
+      // if there was a post, throw UnauthorizedUserError, otherwise throw PostNotFoundError
+      next(post ? { 
+        name: "UnauthorizedUserError",
+        message: "You cannot delete a post which is not yours"
+      } : {
+        name: "PostNotFoundError",
+        message: "That post does not exist"
+      });
+    }
+
+  } catch ({ name, message }) {
+    next({ name, message })
+  }
 });
 
 apiRouter.use((error, req, res, next) => {

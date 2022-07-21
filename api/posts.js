@@ -39,13 +39,46 @@ postsRouter.use((req, res, next) => {
   });
   
   
-  postsRouter.get('/', async (req, res) => {
-    const posts = await getAllPosts();
+  postsRouter.get('/', async (req, res, next) => {
+    const allPosts = await getAllPosts();
+    const posts = allPosts.filter(post => {
+         if (post.active) {
+             return true;
+         }
+         if (req.user && post.author.id === req.user.id) {
+             return true;
+         }
+     })
+     res.send({
+         posts: posts
+     })
+ })
+  
+  // postsRouter.get('/', async (req, res, next) => {
+  //   try {
+  //   const allPosts = await getAllPosts();
+  //   const posts = allPosts.filter(post => {
+  //     // the post is active, doesn't matter who it belongs to
+  //     if (post.active) {
+  //       return true;
+  //     }
     
-    res.send({
-      "posts": [posts]
-    });
-  });
+  //     // the post is not active, but it belogs to the current user
+  //     if (req.user && post.author.id === req.user.id) {
+  //       return false;
+  //     }
+    
+  //     // none of the above are true
+  //     return false;
+  //   });;
+    
+  //   res.send({
+  //     "posts": [posts]
+  //   });
+  // }catch ({ name, message }) {
+  //   next({ name, message });
+  // }});
+
 
   postsRouter.patch('/:postId', requireUser, async (req, res, next) => {
     const { postId } = req.params;
