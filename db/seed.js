@@ -8,7 +8,7 @@ const {
   updatePost,
   getAllPosts,
   getPostsByUser,
-  addTagsToPost
+  addTagsToPost,
 } = require("./index");
 
 async function dropTables() {
@@ -108,20 +108,20 @@ async function createInitialPosts() {
       title: "First Post",
       content:
         "This is my first post. I hope I love writing blogs as much as I love writing them.",
-        tags: ["#happy", "#youcandoanything"]
+      tags: ["#happy", "#youcandoanything"],
     });
     await createPost({
       authorId: sandra.id,
       title: "How does this work?",
       content: "Seriously, does this even do anything?",
-      tags: ["#happy", "#worst-day-ever"]
+      tags: ["#happy", "#worst-day-ever"],
     });
 
     await createPost({
       authorId: glamgal.id,
       title: "Living the Glam Life",
       content: "Do you even? I swear that half of you are posing.",
-      tags: ["#happy", "#youcandoanything", "#canmandoeverything"]
+      tags: ["#happy", "#youcandoanything", "#canmandoeverything"],
     });
     console.log("Finished creating posts!");
   } catch (error) {
@@ -135,8 +135,8 @@ async function createInitialPosts() {
 //     console.log("Starting to create tags...");
 
 //     const [happy, sad, inspo, catman] = await createTags([
-//       '#happy', 
-//       '#worst-day-ever', 
+//       '#happy',
+//       '#worst-day-ever',
 //       '#youcandoanything',
 //       '#catmandoeverything'
 //     ]);
